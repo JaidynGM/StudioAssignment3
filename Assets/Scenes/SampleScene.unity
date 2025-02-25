@@ -285,6 +285,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 293497473936565112, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
   m_PrefabInstance: {fileID: 100919199}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &124848271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 124848272}
+  m_Layer: 0
+  m_Name: Coins
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &124848272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124848271}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1194474304}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &221105007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1309,6 +1341,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
+--- !u!1001 &985600221
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 124848272}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.175
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.69
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.176
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+      propertyPath: m_Name
+      value: Coin
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7bf96557604232f4e945836e97a33221, type: 3}
 --- !u!1001 &1007583701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1561,6 +1650,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
+--- !u!4 &1194474304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7bf96557604232f4e945836e97a33221, type: 3}
+  m_PrefabInstance: {fileID: 985600221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1447759827 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 293497473936565112, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
@@ -1738,7 +1832,7 @@ MonoBehaviour:
   rotationSpeed: 10
   movementDampening: 0.9
   doubleJumpEnabled: 1
-  doubleJumpCooldown: 3
+  doubleJumpCooldown: 1.6
 --- !u!136 &1884029300
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1931,3 +2025,4 @@ SceneRoots:
   - {fileID: 855048555}
   - {fileID: 34941700}
   - {fileID: 798082881}
+  - {fileID: 124848272}
