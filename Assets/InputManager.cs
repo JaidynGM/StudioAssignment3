@@ -2,14 +2,14 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class inputManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
     public UnityEvent<Vector2> OnMove = new UnityEvent<Vector2>();
     public UnityEvent OnSpacePressed = new UnityEvent();
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             OnSpacePressed?.Invoke();
         }
@@ -31,6 +31,12 @@ public class inputManager : MonoBehaviour
         {
             input += Vector2.up;
         }
+
+        if (input.magnitude > 1f)
+        {
+            input.Normalize();
+        }
+
         OnMove?.Invoke(input);
     }
 }
