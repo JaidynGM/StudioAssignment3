@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     [SerializeField] private GroundCheck groundCheck;
+    [SerializeField] private Transform cameraTransform;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -22,10 +23,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void MovePlayer(Vector2 direction)
+    private void MovePlayer(Vector2 inputDirection)
     {
-        Vector3 moveDirection = new(direction.x, 0f, direction.y);
-        rb.AddForce(speed * moveDirection);
+        if (cameraTransform == null) return;
+
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
+        camForward.y = 0; 
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 moveDirection = (camForward * inputDirection.y + camRight * inputDirection.x).normalized;
+
+        rb.AddForce(speed * moveDirection, ForceMode.Force);
+
+        if (moveDirection.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+        }
     }
 
     private void Jump()
