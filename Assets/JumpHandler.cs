@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class JumpHandler
 {
@@ -8,7 +7,7 @@ public class JumpHandler
     private float doubleJumpForce;
     private bool doubleJumpEnabled;
     private float doubleJumpCooldown;
-    private float doubleJumpCooldownTimer;
+    private float doubleJumpCooldownTimer = 0f;
     private bool isGrounded;
     private bool canDoubleJump;
     private bool hasDoubleJumped;
@@ -32,9 +31,15 @@ public class JumpHandler
 
     public void Jump()
     {
+        if (!GameManager.Instance.jumpEnabled)
+        {
+            return;
+        }
+
         if (isGrounded)
         {
             PerformJump(jumpForce);
+
             if (doubleJumpEnabled)
             {
                 canDoubleJump = true;
@@ -64,11 +69,13 @@ public class JumpHandler
     public void UpdateGroundedStatus(bool grounded)
     {
         isGrounded = grounded;
+
         if (grounded)
         {
             canDoubleJump = false;
             hasDoubleJumped = false;
         }
     }
+
 }
 

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // General parameters and dependencies
     [SerializeField] private InputManager inputManager;
     [SerializeField] private GroundCheck groundCheck;
     [SerializeField] private Transform cameraTransform;
@@ -19,80 +18,50 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool doubleJumpEnabled = true;
     [SerializeField] private float doubleJumpCooldown = 1.0f;
 
+    // Dash parameters
+    [SerializeField] private float dashForce = 15f;
+    [SerializeField] private float dashCooldown = 2.0f;
+
     private Rigidbody rb;
     private JumpHandler jumpHandler;
-    private Vector2 currentInputDirection;
+    public DashHandler dashHandler { get; private set; }
+    private MovementHandler movementHandler;
+    private bool isGrounded;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         jumpHandler = new JumpHandler(rb, jumpForce, doubleJumpForce, doubleJumpEnabled, doubleJumpCooldown);
+        dashHandler = new DashHandler(rb, dashForce, dashCooldown);
+        movementHandler = new MovementHandler(rb, cameraTransform, acceleration, maxSpeed, rotationSpeed, movementDampening);
 
-        inputManager.OnMove.AddListener(HandleMoveInput);
+        inputManager.OnMove.AddListener(movementHandler.UpdateInput);
         inputManager.OnSpacePressed.AddListener(jumpHandler.Jump);
+        inputManager.OnDashPressed.AddListener(() => dashHandler.Dash(transform));
 
         if (groundCheck != null)
         {
-            groundCheck.OnGroundChange.AddListener(jumpHandler.UpdateGroundedStatus);
+            groundCheck.OnGroundChange.AddListener(UpdateGroundedStatus);
         }
     }
 
     private void Update()
     {
         jumpHandler.UpdateJumpCooldown(Time.deltaTime);
+        dashHandler.UpdateDashCooldown(Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        MovePlayer(currentInputDirection);
-
-        if (currentInputDirection.magnitude < 0.1f)
-        {
-            Vector3 currentVelocity = rb.linearVelocity;
-            Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
-            horizontalVelocity *= movementDampening;
-            rb.linearVelocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
-        }
+        movementHandler.Move();
+        movementHandler.ApplyDampening();
     }
 
-    private void HandleMoveInput(Vector2 inputDirection)
+    private void UpdateGroundedStatus(bool grounded)
     {
-        currentInputDirection = inputDirection;
-    }
-
-    private void MovePlayer(Vector2 inputDirection)
-    {
-        if (cameraTransform == null) return;
-
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
-
-        camForward.y = 0;
-        camRight.y = 0;
-
-        if (camForward.magnitude < 0.001f) camForward = Vector3.forward;
-        if (camRight.magnitude < 0.001f) camRight = Vector3.right;
-
-        camForward.Normalize();
-        camRight.Normalize();
-
-        Vector3 moveDirection = camForward * inputDirection.y + camRight * inputDirection.x;
-
-        if (moveDirection.magnitude > 0.01f)
-        {
-            moveDirection.Normalize();
-            rb.AddForce(acceleration * moveDirection, ForceMode.Acceleration);
-
-            Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-            if (horizontalVelocity.magnitude > maxSpeed)
-            {
-                horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
-                rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
-            }
-
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        }
+        isGrounded = grounded;
+        jumpHandler.UpdateGroundedStatus(grounded);
     }
 }
+
