@@ -21,29 +21,44 @@ public class PlayerController : MonoBehaviour
     // Dash parameters
     [SerializeField] private float dashForce = 15f;
     [SerializeField] private float dashCooldown = 2.0f;
+    [SerializeField] private float dashDuration = 0.2f;
 
     private Rigidbody rb;
     private JumpHandler jumpHandler;
     public DashHandler dashHandler { get; private set; }
     private MovementHandler movementHandler;
     private bool isGrounded;
+    private Vector2 currentInputDirection;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         jumpHandler = new JumpHandler(rb, jumpForce, doubleJumpForce, doubleJumpEnabled, doubleJumpCooldown);
-        dashHandler = new DashHandler(rb, dashForce, dashCooldown);
+        dashHandler = new DashHandler(rb, dashForce, dashCooldown, cameraTransform, dashDuration);
         movementHandler = new MovementHandler(rb, cameraTransform, acceleration, maxSpeed, rotationSpeed, movementDampening);
 
-        inputManager.OnMove.AddListener(movementHandler.UpdateInput);
+        // Setup input handling
+        inputManager.OnMove.AddListener(HandleMoveInput);
         inputManager.OnSpacePressed.AddListener(jumpHandler.Jump);
-        inputManager.OnDashPressed.AddListener(() => dashHandler.Dash(transform));
+        inputManager.OnDashPressed.AddListener(TriggerDash);
 
         if (groundCheck != null)
         {
             groundCheck.OnGroundChange.AddListener(UpdateGroundedStatus);
         }
+    }
+
+    private void HandleMoveInput(Vector2 input)
+    {
+        currentInputDirection = input;
+        movementHandler.UpdateInput(input);
+        dashHandler.SetInputDirection(input);
+    }
+
+    private void TriggerDash()
+    {
+        dashHandler.Dash(transform);
     }
 
     private void Update()
@@ -54,8 +69,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        movementHandler.Move();
-        movementHandler.ApplyDampening();
+        if (!dashHandler.isDashing)
+        {
+            movementHandler.Move();
+            movementHandler.ApplyDampening();
+        }
     }
 
     private void UpdateGroundedStatus(bool grounded)
@@ -64,4 +82,3 @@ public class PlayerController : MonoBehaviour
         jumpHandler.UpdateGroundedStatus(grounded);
     }
 }
-
