@@ -296,7 +296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 293497473936565112, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18
+      value: -16.29
       objectReference: {fileID: 0}
     - target: {fileID: 293497473936565112, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
       propertyPath: m_LocalPosition.y
@@ -304,7 +304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 293497473936565112, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8
+      value: 10.62
       objectReference: {fileID: 0}
     - target: {fileID: 293497473936565112, guid: 82b8634de46b6834a8551b765f0d0939, type: 3}
       propertyPath: m_LocalRotation.w
@@ -561,7 +561,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25340134, y: 0.000000043628916, z: -0.000000011428643, w: 0.9673613}
-  m_LocalPosition: {x: 0, y: 3.35, z: -4}
+  m_LocalPosition: {x: 0, y: 3.05, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -778,7 +778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7202067518535117981, guid: b9281e066b3f4834fabf71a04ce45686, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.5
+      value: -16.03
       objectReference: {fileID: 0}
     - target: {fileID: 7202067518535117981, guid: b9281e066b3f4834fabf71a04ce45686, type: 3}
       propertyPath: m_LocalPosition.y
@@ -786,7 +786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7202067518535117981, guid: b9281e066b3f4834fabf71a04ce45686, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.69
+      value: 9.78
       objectReference: {fileID: 0}
     - target: {fileID: 7202067518535117981, guid: b9281e066b3f4834fabf71a04ce45686, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1304,8 +1304,8 @@ Transform:
   m_GameObject: {fileID: 815997303}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.949, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.14548, z: 0.5}
+  m_LocalPosition: {x: 0, y: -0.969, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.14737125, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1884029303}
@@ -1635,7 +1635,7 @@ Transform:
   m_GameObject: {fileID: 855048549}
   serializedVersion: 2
   m_LocalRotation: {x: 0.25340134, y: 0.000000043495145, z: -0.000000010917978, w: 0.9673613}
-  m_LocalPosition: {x: 0, y: 3.35, z: -4}
+  m_LocalPosition: {x: 0, y: 3.05, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2489,7 +2489,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 439, y: 212}
+  m_AnchoredPosition: {x: 442.7, y: 219.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567341152
@@ -2633,13 +2633,16 @@ MonoBehaviour:
   groundCheck: {fileID: 815997305}
   cameraTransform: {fileID: 855048555}
   acceleration: 15
-  maxSpeed: 10
-  rotationSpeed: 10
+  maxSpeed: 8
+  rotationSpeed: 0
   movementDampening: 0.9
-  jumpForce: 3
-  doubleJumpForce: 4
+  jumpForce: 4.5
+  doubleJumpForce: 3
   doubleJumpEnabled: 1
   doubleJumpCooldown: 1.6
+  dashForce: 25
+  dashCooldown: 3.5
+  dashDuration: 0.2
 --- !u!136 &1884029300
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2725,8 +2728,8 @@ Transform:
   m_GameObject: {fileID: 1884029298}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0}
+  m_LocalScale: {x: 1, y: 0.75195, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 815997304}
@@ -2815,6 +2818,12 @@ MonoBehaviour:
   OnSpacePressed:
     m_PersistentCalls:
       m_Calls: []
+  OnResetPressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDashPressed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1992419421
 Transform:
   m_ObjectHideFlags: 0
@@ -2843,6 +2852,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 1567341152}
+  inputManager: {fileID: 1992419420}
+  jumpEnabled: 1
 --- !u!1001 &2021449334
 PrefabInstance:
   m_ObjectHideFlags: 0
