@@ -1823,14 +1823,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1992419420}
-  jumpForce: 5
-  doubleJumpForce: 4
   groundCheck: {fileID: 815997305}
   cameraTransform: {fileID: 855048555}
   acceleration: 15
   maxSpeed: 10
   rotationSpeed: 10
   movementDampening: 0.9
+  jumpForce: 3
+  doubleJumpForce: 4
   doubleJumpEnabled: 1
   doubleJumpCooldown: 1.6
 --- !u!136 &1884029300

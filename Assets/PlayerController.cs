@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // General paramters and calls
+    // General parameters and dependencies
     [SerializeField] private InputManager inputManager;
-    [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private float doubleJumpForce = 4f;
     [SerializeField] private GroundCheck groundCheck;
     [SerializeField] private Transform cameraTransform;
 
@@ -15,40 +13,34 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float movementDampening = 0.9f;
 
-    // Double jump parameters
+    // Jump parameters
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float doubleJumpForce = 4f;
     [SerializeField] private bool doubleJumpEnabled = true;
     [SerializeField] private float doubleJumpCooldown = 1.0f;
 
     private Rigidbody rb;
-    private bool isGrounded;
-    private bool canDoubleJump = false;
-    private bool hasDoubleJumped = false;
-    private float doubleJumpCooldownTimer = 0f;
+    private JumpHandler jumpHandler;
     private Vector2 currentInputDirection;
 
     private void Start()
     {
-        inputManager.OnMove.AddListener(HandleMoveInput);
         rb = GetComponent<Rigidbody>();
-        inputManager.OnSpacePressed.AddListener(Jump);
+
+        jumpHandler = new JumpHandler(rb, jumpForce, doubleJumpForce, doubleJumpEnabled, doubleJumpCooldown);
+
+        inputManager.OnMove.AddListener(HandleMoveInput);
+        inputManager.OnSpacePressed.AddListener(jumpHandler.Jump);
 
         if (groundCheck != null)
         {
-            groundCheck.OnGroundChange.AddListener(UpdateGroundedStatus);
+            groundCheck.OnGroundChange.AddListener(jumpHandler.UpdateGroundedStatus);
         }
     }
 
     private void Update()
     {
-        if (doubleJumpCooldownTimer > 0)
-        {
-            doubleJumpCooldownTimer -= Time.deltaTime;
-        }
-    }
-
-    private void HandleMoveInput(Vector2 inputDirection)
-    {
-        currentInputDirection = inputDirection;
+        jumpHandler.UpdateJumpCooldown(Time.deltaTime);
     }
 
     private void FixedUpdate()
@@ -62,6 +54,11 @@ public class PlayerController : MonoBehaviour
             horizontalVelocity *= movementDampening;
             rb.linearVelocity = new Vector3(horizontalVelocity.x, currentVelocity.y, horizontalVelocity.z);
         }
+    }
+
+    private void HandleMoveInput(Vector2 inputDirection)
+    {
+        currentInputDirection = inputDirection;
     }
 
     private void MovePlayer(Vector2 inputDirection)
@@ -85,7 +82,6 @@ public class PlayerController : MonoBehaviour
         if (moveDirection.magnitude > 0.01f)
         {
             moveDirection.Normalize();
-
             rb.AddForce(acceleration * moveDirection, ForceMode.Acceleration);
 
             Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
@@ -97,50 +93,6 @@ public class PlayerController : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        }
-    }
-
-    private void Jump()
-    {
-        if (isGrounded)
-        {
-            PerformJump(jumpForce);
-
-            if (doubleJumpEnabled)
-            {
-                canDoubleJump = true;
-                hasDoubleJumped = false;
-            }
-        }
-        else if (doubleJumpEnabled && canDoubleJump && !hasDoubleJumped && doubleJumpCooldownTimer <= 0)
-        {
-            PerformDoubleJump();
-        }
-    }
-
-    private void PerformJump(float force)
-    {
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        rb.AddForce(Vector3.up * force, ForceMode.Impulse);
-    }
-
-    private void PerformDoubleJump()
-    {
-        PerformJump(doubleJumpForce);
-
-        hasDoubleJumped = true;
-        canDoubleJump = false;
-        doubleJumpCooldownTimer = doubleJumpCooldown;
-    }
-
-    private void UpdateGroundedStatus(bool grounded)
-    {
-        isGrounded = grounded;
-
-        if (grounded)
-        {
-            canDoubleJump = false;
-            hasDoubleJumped = false;
         }
     }
 }
